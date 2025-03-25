@@ -56,7 +56,14 @@
     border-radius: 75px;
     cursor: pointer;
 }
-
+.nav-login-cart button:hover{
+    background: #ff5a5a;
+    color: white;
+    outline: none;
+    border: none;
+    transition: ease-in 0.2s
+  
+}
 .nav-login-cart button:active{
     background: #f3f3f3;
 }

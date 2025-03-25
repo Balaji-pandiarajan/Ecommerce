@@ -32,6 +32,10 @@
     width: 15px;
     margin: 0px 40px;
     cursor: pointer;    
+    font-size: 22px;
+}
+.carticon-remove-icon:hover{
+    color: #ff5a5a;
 }
 .cartitems-quantity{
     width:64px;
@@ -97,3 +101,25 @@
     color: white;
     border:none;
 }
+
+
+.cartitems-quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cartitems-quantity button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.cartitems-quantity button:hover {
+  background: #f0f0f0;
+}
+
+
