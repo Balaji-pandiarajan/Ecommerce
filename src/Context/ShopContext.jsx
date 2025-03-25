@@ -34,15 +34,10 @@ const ShopContextProvider = (props) => {
 
   const removeFromCart = (itemId, size) => {
     setCartItems((prev) => {
-      const updatedSizes = { ...prev[itemId].sizes };
-      updatedSizes[size] = Math.max(0, (updatedSizes[size] || 0) - 1);
+      const updatedSizes = { ...prev[itemId]?.sizes };
+      delete updatedSizes[size]; // Remove the size entirely
 
-      // Remove size entry if quantity is 0
-      if (updatedSizes[size] <= 0) {
-        delete updatedSizes[size];
-      }
-
-      // Remove item entirely if no sizes left
+      // If no sizes left, remove the item from the cart
       if (Object.keys(updatedSizes).length === 0) {
         const newCart = { ...prev };
         delete newCart[itemId];
@@ -59,7 +54,9 @@ const ShopContextProvider = (props) => {
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {
-      const itemInfo = all_product.find((product) => product.id === Number(item));
+      const itemInfo = all_product.find(
+        (product) => product.id === Number(item)
+      );
       if (itemInfo) {
         for (const size in cartItems[item].sizes) {
           totalAmount += itemInfo.new_price * cartItems[item].sizes[size];
@@ -84,6 +81,30 @@ const ShopContextProvider = (props) => {
     return totalItems > 1 ? 0 : 30;
   };
 
+  const decrementQuantity = (itemId, size) => {
+    setCartItems((prev) => {
+      const updatedSizes = { ...prev[itemId]?.sizes };
+      if (updatedSizes[size]) {
+        updatedSizes[size] = Math.max(0, updatedSizes[size] - 1); // Decrease but don't delete
+        if (updatedSizes[size] === 0) {
+          delete updatedSizes[size]; // Only delete if quantity reaches 0
+        }
+      }
+
+      // Clean up if no sizes left
+      if (Object.keys(updatedSizes).length === 0) {
+        const newCart = { ...prev };
+        delete newCart[itemId];
+        return newCart;
+      }
+
+      return {
+        ...prev,
+        [itemId]: { sizes: updatedSizes },
+      };
+    });
+  };
+
   const contextValue = {
     getTotalCartItems,
     getTotalCartAmount,
@@ -92,6 +113,7 @@ const ShopContextProvider = (props) => {
     addToCart,
     removeFromCart,
     getShippingCost,
+    decrementQuantity
   };
 
   return (
@@ -102,6 +124,5 @@ const ShopContextProvider = (props) => {
 };
 
 export default ShopContextProvider;
-
 
 // this is a demo command
