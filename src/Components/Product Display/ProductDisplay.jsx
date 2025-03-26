@@ -7,6 +7,11 @@ import { ShopContext } from "../../Context/ShopContext";
 const ProductDisplay = (props) => {
   const { product } = props;
   const { addToCart } = useContext(ShopContext);
+
+  // Displays individual product details with size selection.
+
+  // Key Features:
+  // Size Selection
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
 
@@ -58,6 +63,7 @@ const ProductDisplay = (props) => {
         <div className="productdisplay-right-size">
           <h1>Select Size</h1>
           <div className="productdisplay-right-sizes">
+            {/* Size Options Rendering */}
             {sizes.map((size) => (
               <div
                 key={size}
@@ -72,6 +78,9 @@ const ProductDisplay = (props) => {
                 {size}
               </div>
             ))}
+            {/* Maps through available sizes
+            Highlights selected size with 'selected' class
+            Clears error when size is selected */}
           </div>
           {sizeError && <p className="size-error">Please select a size</p>}
         </div>
