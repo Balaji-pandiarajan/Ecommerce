@@ -18,6 +18,9 @@ const CartItems = () => {
   // Local state for instant UI feedback (optional)
   const [localQuantities, setLocalQuantities] = useState({});
 
+  // Displays and manages cart contents.
+  // Key Features:
+  // Quantity Management
   const handleIncrement = (itemId, size) => {
     // Update global cart
     addToCart(itemId, size);
@@ -28,6 +31,7 @@ const CartItems = () => {
         (prev[`${itemId}-${size}`] || cartItems[itemId]?.sizes[size] || 0) + 1,
     }));
   };
+  // Uses both global state and local state for instant feedback
 
   const handleDecrement = (itemId, size) => {
     decrementQuantity(itemId, size); // Only decreases quantity
@@ -56,6 +60,9 @@ const CartItems = () => {
       </div>
       <hr />
 
+      {/*Cart Item Rendering
+      Nested mapping: products → sizes
+      Creates separate row for each product-size combination */}
       {all_product.map((e) => {
         if (cartItems[e.id]?.sizes) {
           return Object.entries(cartItems[e.id].sizes).map(
