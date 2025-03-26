@@ -5,6 +5,9 @@ import all_product from "../Components/Assets/all_product";
 export const ShopContext = createContext(null);
 
 const ShopContextProvider = (props) => {
+  // This is your central state management component that handles all cart operations.
+  // Key Parts:
+
   const getDefaultCart = () => {
     let cart = {};
     for (let index = 0; index < all_product.length + 1; index++) {
@@ -12,9 +15,12 @@ const ShopContextProvider = (props) => {
     }
     return cart;
   };
+  // Initializes an empty cart structure with slots for all possible products
+  // Each product entry has a sizes object to track quantities per size
 
   const [cartItems, setCartItems] = useState(getDefaultCart());
 
+  // addToCart(itemId, size)
   const addToCart = (itemId, size) => {
     setCartItems((prev) => {
       const existingSizes = prev[itemId]?.sizes || {};
@@ -31,7 +37,10 @@ const ShopContextProvider = (props) => {
       };
     });
   };
+  // Increments quantity for a specific product size
+  // Creates new size entry if it doesn't exist
 
+  // removeFromCart(itemId, size)
   const removeFromCart = (itemId, size) => {
     setCartItems((prev) => {
       const updatedSizes = { ...prev[itemId]?.sizes };
@@ -50,7 +59,10 @@ const ShopContextProvider = (props) => {
       };
     });
   };
+  // Completely removes a size variant from cart
+  // Cleans up product entry if no sizes remain
 
+  // Calculation Helpers
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {
@@ -80,7 +92,9 @@ const ShopContextProvider = (props) => {
     const totalItems = getTotalCartItems();
     return totalItems > 1 ? 0 : 30;
   };
+  // Calculation Helpers
 
+  //decrementQuantity(itemId, size)
   const decrementQuantity = (itemId, size) => {
     setCartItems((prev) => {
       const updatedSizes = { ...prev[itemId]?.sizes };
@@ -89,6 +103,8 @@ const ShopContextProvider = (props) => {
         if (updatedSizes[size] === 0) {
           delete updatedSizes[size]; // Only delete if quantity reaches 0
         }
+        // Reduces quantity but doesn't immediately remove
+        // Only removes when quantity reaches 0
       }
 
       // Clean up if no sizes left
@@ -113,7 +129,7 @@ const ShopContextProvider = (props) => {
     addToCart,
     removeFromCart,
     getShippingCost,
-    decrementQuantity
+    decrementQuantity,
   };
 
   return (
